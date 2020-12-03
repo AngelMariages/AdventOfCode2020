@@ -1,14 +1,14 @@
-example = (1721, 979, 366, 299, 675, 1456)
-
-
 def main():
     data = read_from_file_as_ints()
 
-    #find_from(example)
-    find_from(data)
+    results2 = find_2_num_that_sum_to_2020(data)
+    results3 = find_3_num_that_sum_to_2020(data)
+
+    print("Results for 2 found: {}".format(results2))
+    print("Results for 3 found: {}".format(results3))
 
 
-def read_from_file_as_ints(fileName = "input.txt"):
+def read_from_file_as_ints(fileName="input.txt"):
     lines = []
 
     with open(fileName, "r") as f:
@@ -17,41 +17,52 @@ def read_from_file_as_ints(fileName = "input.txt"):
 
     return lines
 
-def find_from(data):
-    found2 = []
-    found3 = []
-    results2 = []
-    results3 = []
+
+def find_2_num_that_sum_to_2020(data):
+    found = []
+    results = []
 
     for idx, first in enumerate(data):
         rest = data[:idx] + data[idx+1:]
 
-        if first in found2:
+        if first in found:
+            continue
+
+        for second in rest:
+            if (first + second) == 2020:
+                print("{} + {} = 2020!".format(first, second))
+                found.append(second)
+
+                results.append(first * second)
+
+    return results
+
+
+def find_3_num_that_sum_to_2020(data):
+    found = []
+    results = []
+
+    for idx, first in enumerate(data):
+        rest = data[:idx] + data[idx+1:]
+
+        if first in found:
             continue
 
         for idx2, second in enumerate(rest):
-            if (first + second) == 2020:
-                print("{} + {} = 2020!".format(first, second))
-                found2.append(second)
+            rest2 = rest[:idx2] + rest[idx2+1:]
 
-                results2.append(first * second)
-
-            rest2 = data[:idx2] + data[idx2+1:]
-
-            if second in found3:
+            if second in found:
                 continue
 
             for third in rest2:
-                if (first + second + third) == 2020:
+                if (first + second + third == 2020):
                     print("{} + {} + {} = 2020!".format(first, second, third))
-                    found3.append(first)
-                    found3.append(second)
-                    found3.append(third)
+                    found.extend([first, second, third])
 
-                    results3.append(first * second * third)
+                    results.append(first * second * third)
 
-    print("Results for 2 found: {}".format(results2))
-    print("Results for 3 found: {}".format(results3))
+    return results
+
 
 if __name__ == "__main__":
     main()
